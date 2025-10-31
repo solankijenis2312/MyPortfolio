@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:D="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Jenish Solanki</title>
+    <style>
+        /* ============================================
+           ROOT VARIABLES & GENERAL STYLING
+           ============================================ */
+        :root {
+            --primary-color: #7c3aed;
+            --secondary-color: #6d28d9;
+            --accent-color: #a78bfa;
+            --text-light: #d1d5db;
+            --bg-dark: #111827;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           NAVIGATION BAR
+           ============================================ */
+        .navbar {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(109, 40, 217, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001; /* Ensure hamburger is above nav-menu when open */
+        }
+
+        /* Optional: Add active state for a transforming hamburger icon */
+        .hamburger.is-active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.is-active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.is-active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 5px 0;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        /* ============================================
+           ABOUT SECTION
+           ============================================ */
+        .about {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .about-container h1 {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-intro {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+     .about-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* FIX 2: Center content of profile card */
+    align-items: center;
+}
+
+.about-image {
+    /* FIX 1: Set fixed width and height for better control */
+    width: 300px;
+    height: 380px;
+
+    border-radius: var(--border-radius);
+    border: 3px solid var(--primary-color);
+    object-fit: cover;
+    /* Removed max-height: 380px; as it is now defined by height: 380px; */
+
+    box-shadow: 0 20px 50px rgba(124, 58, 237, 0.25);
+    transition: var(--transition);
+}
+
+       .about-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 25px 60px rgba(124, 58, 237, 0.35);
+}
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(109, 40, 217, 0.08) 100%);
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .info-box p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .info-box strong {
+            color: var(--accent-color);
+            min-width: 80px;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: var(--transition);
+            margin-top: 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+        }
+
+        .github-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.4);
+        }
+
+        .about-text {
+            padding: 1rem;
+        }
+
+        .about-text h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        @media (max-width: 768px) {
+    /* ... (other media query styles) ... */
+
+    .about-image {
+        /* Ensure the image scales down on small screens */
+        width: 100%;
+        max-width: 300px; /* Keep it from getting too wide, relative to the screen */
+        height: auto;
+    }
+}
+
+        /* ============================================
+           EDUCATION & EXPERIENCE SECTIONS
+           ============================================ */
+        .education-section,
+        .experience-section,
+        .qualities-section {
+            margin: 2.5rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(109, 40, 217, 0.08) 100%);
+            border-left: 5px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .education-section h3,
+        .experience-section h3,
+        .qualities-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .education-item,
+        .experience-item {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+        }
+
+        .education-item:last-child,
+        .experience-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .education-item h4,
+        .experience-item h4 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .institution,
+        .company {
+            color: #60a5fa;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .duration {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .duration::before {
+            content: '📅';
+        }
+
+        .grade {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .qualities-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .qualities-list li {
+            padding: 0.75rem 0 0.75rem 2rem;
+            position: relative;
+            color: var(--text-light);
+            background: rgba(124, 58, 237, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .qualities-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0.75rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(109, 40, 217, 0.08) 100%);
+            border-top: 1px solid rgba(124, 58, 237, 0.2);
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-content p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .social-link:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                order: 2;
+            }
+
+            .about-text {
+                order: 1;
+            }
+
+            .about-container h1 {
+                font-size: 2rem;
+            }
+
+            .nav-menu {
+                gap: 1.5rem;
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(17, 24, 39, 0.95);
+                padding: 1.5rem;
+                border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .qualities-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Jenish Solanki</a>
+            <div class="nav-menu" id="nav-menu">
+
+                <a href="skills.html" class="nav-link">Skills</a>
+                <a href="project.html" class="nav-link">Projects</a>
+
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section id="about" class="about">
+        <div class="about-container">
+            <h1>About Me 👋</h1>
+            <p class="about-intro">
+                An aspiring Backend Java Developer with a passion for building robust and scalable applications. I am currently dedicated to mastering Java and object-oriented programming to solve real-world problems.
+            </p>
+
+            <div class="about-content">
+                <div class="profile-card">
+                    <img src="images/jenish doc.jpg" alt="Jenish Solanki" class="about-image">
+
+                    <div class="info-box">
+                        <h3>Personal Information</h3>
+                        <p><strong>Name:</strong> Jenish Solanki</p>
+                        <p><strong>Age:</strong> 19</p>
+                        <p><strong>Location:</strong> Ahmedabad, India</p>
+                        <p><strong>Email:</strong> solankijenish04@gmail.com</p>
+                    </div>
+
+                    <a href="https://github.com/solankijenis2312" target="_blank" class="github-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 3s-1.09-.34-3.5 1.34c-2.2-.6-4.6-.6-6.8 0C5.09 2.66 4 3 4 3a5.07 5.07 0 0 0-.09 1.77A5.44 5.44 0 0 0 2 13.56c0 5.09 3.3 6.28 6.44 7A3.37 3.37 0 0 0 9 19c-5 1.5-5-2.5-7-3"></path></svg>
+                        View GitHub Profile
+                    </a>
+                </div>
+
+                <div class="about-text">
+                    <h2>Professional Summary & Goals</h2>
+                    <p>
+                        Hi, I'm Jenish Solanki, a 19-year-old Computer Science student from Ahmedabad, Gujarat.
+                        Currently pursuing my degree at Government Engineering College, Pata, I'm passionately focused on becoming a skilled Java Developer. I combine my academic foundation with hands-on learning through online courses and personal projects to build robust applications.
+                        My goal is to master Java ecosystems like Spring Boot while continuously improving my problem-solving abilities—turning my technical curiosity into practical solutions
+                    </p>
+                    <p>
+                        Key Skills & Focus Areas:
+                    <ul>
+                        <li>Core Java: Learning & Practicing more about OOPs concepts, Exception Handling, and Multithreading.</li>
+                        <li>Web Development: Aspiring to learn Spring Boot for building RESTful APIs.</li>
+                        <li>Data Structures & Algorithms (DSA): Currently practicing DSA fundamentals for problem-solving efficiency.</li>
+                    </ul>
+                    </p>
+
+
+
+                    <div class="education-section">
+                        <h3>Education</h3>
+
+                        <div class="education-item">
+                            <h4>Diploma in Computer Engineering</h4>
+                            <p class="institution">R.C Technical College, Ahmedabad </p>
+                            <p class="duration">Aug 2022 - july 2025</p>
+                            <!--                            <span class="grade">Current CGPA: X.X</span>-->
+                            <p class="description">I have completed My Diploma in Computer Engineering from R.C. Technical College, Ahmedabad. During my three-year diploma program, I developed a comprehensive foundation in computer engineering through rigorous coursework covering
+                                Programming Fundamentals :
+                                C, C++, and Core Java
+                                Hardware & Networking: Studied microprocessor architecture and network protocols
+                                Software Development: Applied object-oriented principles in practical assignments
+                                Project Work: Led team projects including a student management system using Java
+                        </div>
+
+                        <div class="education-item">
+                            <h4>Bachelor of Engineering in Computer Science</h4>
+                            <p class="institution">Government Engineering College, Patan </p>
+                            <p class="duration">Aug 2025 - Present (Expected Graduation: 2028)</p>
+<!--                            <span class="grade">Current CGPA: X.X</span>-->
+                            <p class="description">Building a strong theoretical foundation in computer science, including java , data structures, and MySql to apply on real world project to improve my practical skills.</p>
+                        </div>
+                    </div>
+
+                    <div class="experience-section">
+                        <h3>Experience & Internship</h3>
+                        <div class="experience-item">
+                            <h4>Machine Learning Intern (45 Days)</h4>
+                            <p class="company">Infoblabz Pvt. Ltd.</p>
+                            <p class="duration">Summer 2024</p>
+                            <p class="description">During my summer internship at Infoblabz, I worked on building a crop recommendation system using Python libraries including Pandas, NumPy, and scikit-learn.
+
+                                My key contributions included:
+                                Data Processing: Used Pandas to clean and structure agricultural datasets
+                                Feature Engineering: Applied NumPy for numerical computations and data transformation
+                                Model Development: Implemented basic machine learning algorithms with scikit-learn for crop yield prediction
+                        </div>
+                        <div class="experience-item">
+                            <h4>Self-Study & Personal Projects</h4>
+                            <p class="company">Independent Learning</p>
+                            <p class="duration">Ongoing</p>
+                            <p class="description">Actively learning about Java , Spring Core, Spring boot, Spring Ai and building small Java applications (e.g., a simple CLI banking system) to practice OOP principles and core Java features. Dedicated to completing the Spring Boot track.</p>
+                        </div>
+                    </div>
+
+                    <div class="qualities-section">
+                        <h3>Key Qualities</h3>
+                        <ul class="qualities-list">
+                            <li> Problem Solving & Analytical Thinking</li>
+                            <li> Adaptability & Continuous Learning</li>
+                            <li> Attention to Detail & Quality Focus</li>
+                            <li> Proactive & Self-Motivated</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; <span th:text="${T(java.time.Year).now()}">2025</span> Jenish Solanki. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://linkedin.com" target="_blank" class="social-link">LinkedIn</a>
+            <a href="https://github.com/solankijenis2312" target="_blank" class="social-link">GitHub</a>
+
+        </div>
+    </div>
+</footer>
+
+<script>
+    // JavaScript for Toggling Mobile Navigation Menu
+    document.getElementById('hamburger').onclick = function() {
+        document.getElementById('nav-menu').classList.toggle('active');
+        this.classList.toggle('is-active'); // Add/remove optional active class for icon transformation
+    }
+</script>
+</body>
+</html>
